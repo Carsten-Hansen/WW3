@@ -774,6 +774,7 @@ CONTAINS
          FLGR2(NOGRP,NGRPP,NRGRD),FLG2D(NOGRP,NGRPP), FLG1D(NOGRP), &
          FLG2(NOGRP,NRGRD),OUTFF(8,0:NRGRD))
     !
+    ODAT(:,:) = 0
     MDS    = -1
     MDSF   = -1
     FLGR2  = .FALSE.
@@ -4158,6 +4159,7 @@ CONTAINS
          FLGR2(NOGRP,NGRPP,NRGRD),FLG2D(NOGRP,NGRPP), FLG1D(NOGRP), &
          FLG2(NOGRP,NRGRD),OUTFF(8,0:NRGRD))
     !
+    ODAT(:,:) = 0
     MDS    = -1
     MDSF   = -1
     FLGR2  = .FALSE.
