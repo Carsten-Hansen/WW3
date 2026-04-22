@@ -63,7 +63,8 @@ Options:
   -f               : force pre- and post-processing programs to be compiled
                    : non-MPI (i.e., with SHRD switch); default is all programs
                    : compiled with unmodified switch settings
-  -g grid_string   : use ww3_grid_<grid_string>.inp
+  -g grid_string   : use <prog>_<grid_string>.inp when <prog> is one of ww3_grid, 
+                   : ww3_strt, ww3_gint
   -h               : print usage and exit
   -i inpdir        : use inputs in test_name/<inpdir> (default  test_name/input)
   -m grid_set      : execute multi-model test
@@ -731,12 +732,20 @@ prog=ww3_strt
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
 
-# select inp/nml files
-  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}.nml 2>/dev/null`" ]
+# config filename - gridset option
+  if [ $grdstr ]
   then
-    ifile="`ls ${path_i}/${prog}.nml 2>/dev/null`"
+    fileconf="${prog}_${grdstr}${gu}"
   else
-    ifile="`ls $path_i/$prog.inp 2>/dev/null`"
+    fileconf="${prog}${gu}"
+  fi
+
+# select inp/nml files
+  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
+  then
+    ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
+  else
+    ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
   fi
 
   if [ $? = 0 ]

@@ -1,0 +1,38 @@
+#############################################################################
+#                                                                           #
+# Case switch RTD                                                           #
+#                                                                           #
+# mww3_test_02 : Test for static nesting (propagation only)                 #
+#                Single nest basic test.                                    #
+#                                                                           #
+# The test case here is for spherical (longitude,latitude) grids with a     #
+# (common) rotated pole                                                     #
+# The test case is adopted from mww3_test_02 with inputs marked 'rtd'       #
+# The grid set grdset_r is a spherical approximation to Cartesian grdset_b  #
+# The script run_cmake_test is run with option -g rtd                       #
+#                                                                           #
+#   * ww3_grid_rtd_outer.inp :                           (only outer grid)  #
+#     + Spatial grid: 43 x 43 rectilinear spherical grid                    #
+#       - dx = 0.225 deg, dy = 0.225 deg                                    #
+#       - Xrange = -5.625:3.825 deg, Yrange = -5.625:3.825 deg              #
+#       - Grid north pole at lon, lat = -90., 0.                            #
+#     + Spectral grid: ntheta = 24, nf = 25, f1 = 0.04177, fgamma = 1.1     #
+#                                                                           #
+#   * ww3_grid_rtd_fine.inp :               (double resolution inner grid)  #
+#     + Spatial grid: 25 x 25 rectilinear spherical grid                    #
+#       - dx = 0.1125 deg, dy = 0.1125 deg                                  #
+#       - Xrange = 0:2.7 deg, Yrange = 0:2.7 deg                            #
+#       - Grid north pole at lon, lat = -90., 0.                            #
+#     + Spectral grid: ntheta = 24, nf = 25, f1 = 0.04177, fgamma = 1.1     #
+#                                                                           #
+#   * Grid set :                                                            #
+#     +  grdset_r: outer + fine                                             #
+#                                                                           #
+#   * Switch:                                                               #
+#     + switch_PR3_UQ_MPI_RTD                                               #
+#                                                                           #
+# Example run_test command:                                                 #
+# ./bin/run_cmake_test -N -g rtd -m grdset_r -n 3 -p mpirun             \   #
+#     -s PR3_UQ_MPI_RTD -w work_bp_PR3_MPI_RTD ../model mww3_test_02        #
+#                                                                           #
+

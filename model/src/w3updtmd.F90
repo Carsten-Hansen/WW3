@@ -1399,6 +1399,9 @@ CONTAINS
     !!   Use rotation angle and action conversion sub.  JGLi12Jun2012
     USE W3GDATMD, ONLY: NK, NTH, NSPEC, AnglD, PoLat
     USE W3SERVMD, ONLY: W3ACTURN
+    !! BCTURN==.TRUE. only when calling W3UBPT from W3IOBC,
+    !! This is in order *not* to turn 2-way nested bdy data under ww3_multi
+    USE W3IOBCMD, ONLY: BCTURN
 #endif
 #ifdef W3_T0
     USE W3GDATMD, ONLY: DDEN
@@ -1475,18 +1478,24 @@ CONTAINS
       !
 #ifdef W3_RTD
       !!  Rotate the spectra if model is on rotated grid.  JGLi12Jun2012
-      !!  PoLat == 90. if the grid is standard lat/lon (C. Hansen 20190613)
-      IF ( PoLat < 90. ) THEN
+      !!  PoLat == 90. if the grid is standard lat/lon
+      !!  If PoLat < 90. we have set a logical BCTURN == .true. to turn the spectra.
+      !!  Note, for to-way nesting under ww3_multi, spectra are *not* turned.
+      !!  Spectra are turned/deturned only when read/write from/to file (W3IOBC).
+      IF ( BCTURN ) THEN
         Spectr = BBPIN(:,IBI)
         AnglBP = AnglD(ISEA)
         CALL  W3ACTURN( NTH, NK, AnglBP, Spectr )
         BBPIN(:,IBI) = Spectr
       END IF
-
 #endif
       !
     END DO
-
+#ifdef W3_RTD
+    !! Return to default *not* turning the spectra
+    BCTURN = .false.
+#endif
+    !
     ! 3.  Wave height test output ---------------------------------------- *
     !
 #ifdef W3_T0
