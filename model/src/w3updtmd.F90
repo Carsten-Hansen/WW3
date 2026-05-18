@@ -1399,7 +1399,7 @@ CONTAINS
     !!   Use rotation angle and action conversion sub.  JGLi12Jun2012
     USE W3GDATMD, ONLY: NK, NTH, NSPEC, AnglD, PoLat
     USE W3SERVMD, ONLY: W3ACTURN
-    !! BCTURN==.TRUE. only when calling W3UBPT from W3IOBC,
+    !! BCTURN==.TRUE. only when calling W3UBPT upon reading data from nest.ww3,
     !! This is in order *not* to turn 2-way nested bdy data under ww3_multi
     USE W3IOBCMD, ONLY: BCTURN
 #endif
