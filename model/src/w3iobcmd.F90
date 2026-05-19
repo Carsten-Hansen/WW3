@@ -80,7 +80,7 @@ MODULE W3IOBCMD
        IDSTRBC  = 'WAVEWATCH III BOUNDARY DATA FILE'
   !/
 #ifdef W3_RTD
-  ! Logical to tell subroutine W3UBPT if inbound boundary conditions are to be roteted
+  ! Logical to tell subroutine W3UBPT if inbound boundary conditions are to be rotated
   LOGICAL :: BCTURN = .FALSE.
 #endif
   !/
