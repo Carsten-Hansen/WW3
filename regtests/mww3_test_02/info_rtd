@@ -8,8 +8,17 @@
 # The test case here is for spherical (longitude,latitude) grids with a     #
 # (common) rotated pole                                                     #
 # The test case is adopted from mww3_test_02 with inputs marked 'rtd'       #
-# The grid set grdset_r is a spherical approximation to Cartesian grdset_b  #
+# grdset_r, grdset_n are spherical approximations to the Cartesian grdset_b #
 # The script run_cmake_test is run with option -g rtd                       #
+#                                                                           #
+#   * ww3_grid_rtd_bndin.inp :  (grid with boundary spectra from file)      #
+#     + Spatial grid: 13 x 13 rectilinear spherical grid                    #
+#       - dx = 1.0 deg, dy = 1.0 deg                                        #
+#       - Xrange = -7.0:5.0 deg, Yrange = -7.0:5.0 deg                      #
+#       - Grid north pole at lon, lat = -90., 0.                            #
+#     + Spectral grid: ntheta = 24, nf = 13, f1 = 0.067, fgamma = 1.1       #
+#     + nest.ww3 file generated with ww3_bound from triangle bnd{1,2,3}.spc #
+#       - adapted from regtests/ww3_tr1 (C. Bunney)
 #                                                                           #
 #   * ww3_grid_rtd_outer.inp :                           (only outer grid)  #
 #     + Spatial grid: 43 x 43 rectilinear spherical grid                    #
@@ -25,14 +34,17 @@
 #       - Grid north pole at lon, lat = -90., 0.                            #
 #     + Spectral grid: ntheta = 24, nf = 25, f1 = 0.04177, fgamma = 1.1     #
 #                                                                           #
-#   * Grid set :                                                            #
+#   * Grid sets :                                                           #
 #     +  grdset_r: outer + fine                                             #
+#     +  grdset_n: bndin + outer + fine                                     #
 #                                                                           #
 #   * Switch:                                                               #
 #     + switch_PR3_UQ_MPI_RTD                                               #
 #                                                                           #
-# Example run_test command:                                                 #
+# Example run_test commands:                                                #
 # ./bin/run_cmake_test -N -g rtd -m grdset_r -n 3 -p mpirun             \   #
 #     -s PR3_UQ_MPI_RTD -w work_bp_PR3_MPI_RTD ../model mww3_test_02        #
 #                                                                           #
+# ./bin/run_cmake_test -N -g rtd -m grdset_n -n 3 -p mpirun             \   #
+#     -s PR3_UQ_MPI_RTD -w work_bp_PR3_MPI_RTD ../model mww3_test_02        #
 
