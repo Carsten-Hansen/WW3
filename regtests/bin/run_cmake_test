@@ -840,12 +840,19 @@ prog=ww3_bound
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
 
-# select inp/nml files
-  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}.nml 2>/dev/null`" ]
+  if [ $grdstr ]
   then
-    ifile="`ls ${path_i}/${prog}.nml 2>/dev/null`"
+    fileconf="${prog}_${grdstr}${gu}"
   else
-    ifile="`ls $path_i/$prog.inp 2>/dev/null`"
+    fileconf="${prog}${gu}"
+  fi
+
+# select inp/nml files
+  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
+  then
+    ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
+  else
+    ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
   fi
 
   if [ $? = 0 ]
