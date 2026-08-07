@@ -64,7 +64,7 @@ Options:
                    : non-MPI (i.e., with SHRD switch); default is all programs
                    : compiled with unmodified switch settings
   -g grid_string   : use <prog>_<grid_string>.inp when <prog> is one of ww3_grid, 
-                   : ww3_strt, ww3_gint
+                   : ww3_strt, ww3_gint, ww3_bound
   -h               : print usage and exit
   -i inpdir        : use inputs in test_name/<inpdir> (default  test_name/input)
   -m grid_set      : execute multi-model test
@@ -732,12 +732,12 @@ prog=ww3_strt
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
 
-# config filename - gridset option
+# config filename - grid type option
   if [ $grdstr ]
   then
-    fileconf="${prog}_${grdstr}${gu}"
+    fileconf="${prog}_${grdstr}"
   else
-    fileconf="${prog}${gu}"
+    fileconf="${prog}"
   fi
 
 # select inp/nml files
@@ -839,23 +839,37 @@ fi
 prog=ww3_bound
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
+  ifile=''
+    
+  # seek for an inp/nml file in one of the model grids
+  for g in $model_grids
+  do
+    if [ $multi -eq 2 ]
+    then
+      gu="_$g"
+    fi
+    
+    if [ $grdstr ]
+    then
+      fileconf="${prog}_${grdstr}${gu}"
+    else
+      fileconf="${prog}${gu}"
+    fi
 
-  if [ $grdstr ]
-  then
-    fileconf="${prog}_${grdstr}${gu}"
-  else
-    fileconf="${prog}${gu}"
-  fi
+    if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
+    then
+      ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
+    else
+      ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
+    fi
 
-# select inp/nml files
-  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
-  then
-    ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
-  else
-    ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
-  fi
+    if [ $? = 0 ]
+    then
+      break
+    fi
+  done
 
-  if [ $? = 0 ]
+  if [ "$ifile" ]
   then
 
     echo ' '
@@ -869,12 +883,35 @@ then
       errmsg "$path_e/$prog not found"
       exit 1
     fi
-
+ 
     for g in $model_grids
     do
+
       if [ $multi -eq 2 ]
       then
         gu="_$g"
+      fi
+
+      if [ $grdstr ]
+      then
+        fileconf="${prog}_${grdstr}${gu}"
+      else
+        fileconf="${prog}${gu}"
+      fi
+
+      # select inp/nml files
+      if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
+      then
+        ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
+      else
+        ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
+      fi
+
+      if [ $? = 0 ]
+      then
+        echo "Identify input file $ifile"
+      else
+        continue
       fi
 
       # link conf file
