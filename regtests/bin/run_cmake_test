@@ -776,11 +776,11 @@ then
       then
         \rm -f $prog.nml
         \ln -s $ifile $prog.nml
-        ofile="$path_w/`basename $ifile .nml`${gu}.out"
+        ofile="$path_w/`basename $ifile .nml`.out"
       else
         \rm -f $prog.inp
         \ln -s $ifile $prog.inp
-        ofile="$path_w/`basename $ifile .inp`${gu}.out"
+        ofile="$path_w/`basename $ifile .inp`.out"
       fi
 
       echo "   Processing $ifile"
@@ -883,7 +883,7 @@ then
       errmsg "$path_e/$prog not found"
       exit 1
     fi
- 
+
     for g in $model_grids
     do
 
@@ -919,11 +919,11 @@ then
       then
         \rm -f $prog.nml
         \ln -s $ifile $prog.nml
-        ofile="$path_w/`basename $ifile .nml`${gu}.out"
+        ofile="$path_w/`basename $ifile .nml`.out"
       else
         \rm -f $prog.inp
         \ln -s $ifile $prog.inp
-        ofile="$path_w/`basename $ifile .inp`${gu}.out"
+        ofile="$path_w/`basename $ifile .inp`.out"
       fi
 
       echo "   Processing $ifile"
@@ -940,7 +940,7 @@ then
         Tstart=`date +"%s.%2N"`
       fi
 
-      if $path_e/$prog > $ofile
+      if $path_e/$prog > $ofile 2>&1
       then
         \rm -f $prog.inp
         \rm -f $prog.nml
