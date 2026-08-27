@@ -79,11 +79,6 @@ MODULE W3IOBCMD
   CHARACTER(LEN=32), PARAMETER ::                        &
        IDSTRBC  = 'WAVEWATCH III BOUNDARY DATA FILE'
   !/
-#ifdef W3_RTD
-  ! Logical to tell subroutine W3UBPT if inbound boundary conditions are to be rotated
-  LOGICAL :: BCTURN = .FALSE.
-#endif
-  !/
 CONTAINS
   !/ ------------------------------------------------------------------- /
   !>
@@ -567,14 +562,10 @@ CONTAINS
       !
       ! End FCOO local
 #ifdef W3_RTD
-      ! After read from file nestN.ww3, W3WAVE calls W3UBPT which rotates the spectra
-      ! only if the parameter BCTURN .eq. .TRUE.
-      !
       ! All boundary conditions position arrays XBPI, YBPI are defined
       ! in standard lat/lon coordinates. If Polat = 90. (and Polon = -180.),
       ! the b.c. positions don't need to be remapped
       IF ( Polat < 90. ) THEN
-        BCTURN = .true. ! To turn spectra in later call W3UBPT
         !!   Convert standard into rotated lat/lon. JGLi12Jun2012
         ALLOCATE ( Anglbdy(NBI),  ELatbdy(NBI), ELonbdy(NBI) )
 

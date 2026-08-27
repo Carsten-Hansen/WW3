@@ -151,6 +151,16 @@ MODULE W3UPDTMD
 #endif
   USE W3TIMEMD, ONLY: DSEC21
   !/
+  PUBLIC
+  !/
+  !/ Public variables
+  !/
+#ifdef W3_RTD
+  ! Logical to tell subroutine W3UBPT (called from W3WAVE) when inbound nesting spectra
+  ! are read from file, and therefore are to be rotated
+  LOGICAL :: BCTURN = .FALSE.
+#endif
+  !/
   !/ ------------------------------------------------------------------- /
   !/
 CONTAINS
@@ -1399,9 +1409,6 @@ CONTAINS
     !!   Use rotation angle and action conversion sub.  JGLi12Jun2012
     USE W3GDATMD, ONLY: NK, NTH, NSPEC, AnglD, PoLat
     USE W3SERVMD, ONLY: W3ACTURN
-    !! BCTURN==.TRUE. only when calling W3UBPT upon reading data from nest.ww3,
-    !! This is in order *not* to turn 2-way nested bdy data under ww3_multi
-    USE W3IOBCMD, ONLY: BCTURN
 #endif
 #ifdef W3_T0
     USE W3GDATMD, ONLY: DDEN
@@ -1478,11 +1485,12 @@ CONTAINS
       !
 #ifdef W3_RTD
       !!  Rotate the spectra if model is on rotated grid.  JGLi12Jun2012
+      !!  Spectra are turned/deturned only when read/write from/to file (W3IOBC),
+      !!  To control that spectra are NOT turned after receiving two-way inbound
+      !!  spectra, in W3WAVE we set the logical BCTURN==.true. only when calling
+      !!  W3UBPT from W3WAVE upon prior calling W3IOBC to read data from file nest.ww3.
       !!  PoLat == 90. if the grid is standard lat/lon
-      !!  If PoLat < 90. we have set a logical BCTURN == .true. to turn the spectra.
-      !!  Note, for to-way nesting under ww3_multi, spectra are *not* turned.
-      !!  Spectra are turned/deturned only when read/write from/to file (W3IOBC).
-      IF ( BCTURN ) THEN
+      IF ( BCTURN .AND. PoLat < 90. ) THEN
         Spectr = BBPIN(:,IBI)
         AnglBP = AnglD(ISEA)
         CALL  W3ACTURN( NTH, NK, AnglBP, Spectr )
@@ -1491,10 +1499,6 @@ CONTAINS
 #endif
       !
     END DO
-#ifdef W3_RTD
-    !! Return to default *not* turning the spectra
-    BCTURN = .false.
-#endif
     !
     ! 3.  Wave height test output ---------------------------------------- *
     !
