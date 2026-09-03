@@ -18,7 +18,7 @@
 &RUN_NML
   RUN%FLCX         =  T
   RUN%FLCY         =  T
-  RUN%FLSOU        =  T
+  RUN%FLSOU        =  F
 /
 
 ! -------------------------------------------------------------------- !
@@ -36,7 +36,7 @@
 ! -------------------------------------------------------------------- !
 &GRID_NML
   GRID%NAME         =  'RTD grid input BC'
-  GRID%NML          =  '../input/namelists_RTD.nml'
+  GRID%NML          =  '../input/namelists_rtd_bndin.nml'
   GRID%TYPE         =  'RECT'
   GRID%COORD        =  'SPHE'
   GRID%CLOS         =  'NONE'

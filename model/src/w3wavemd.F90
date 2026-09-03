@@ -195,6 +195,8 @@ MODULE W3WAVEMD
 #endif
   !module default
   implicit none
+  !
+  PUBLIC
   !/
 CONTAINS
   !/ ------------------------------------------------------------------- /
@@ -1311,7 +1313,6 @@ CONTAINS
               ! Do not rotate two-way inbound spectra in calls of W3UBPT from ww3_multi
               BCTURN = .FALSE.
 #endif
-
             ELSE
               ITEST  = 0
             END IF

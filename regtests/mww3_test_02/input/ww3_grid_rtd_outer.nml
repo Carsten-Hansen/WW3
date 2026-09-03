@@ -65,5 +65,18 @@
 /
 
 ! -------------------------------------------------------------------- !
+! Define the inbound boundary condition lines to preprocess via INBND_NML namelist
+! -------------------------------------------------------------------- !
+&INBND_COUNT_NML
+  INBND_COUNT%N_POINT    = 5
+/
+&INBND_POINT_NML
+  INBND_POINT(1)         =  1  1  F
+  INBND_POINT(2)         =  1 43  T
+  INBND_POINT(3)         = 43 43  T
+  INBND_POINT(4)         = 43  1  T
+  INBND_POINT(5)         =  1  1  T
+/
+! -------------------------------------------------------------------- !
 ! WAVEWATCH III - end of namelist                                      !
 ! -------------------------------------------------------------------- !
