@@ -7,8 +7,8 @@
 ! -------------------------------------------------------------------- !
 &SPECTRUM_NML
   SPECTRUM%XFR       =  1.1
-  SPECTRUM%FREQ1     =  0.04177
-  SPECTRUM%NK        =  25
+  SPECTRUM%FREQ1     =  0.067
+  SPECTRUM%NK        =  13
   SPECTRUM%NTH       =  24
 /
 
@@ -18,41 +18,44 @@
 &RUN_NML
   RUN%FLCX         =  T
   RUN%FLCY         =  T
+  RUN%FLSOU        =  F
 /
 
 ! -------------------------------------------------------------------- !
 ! Define the timesteps parameterization via TIMESTEPS_NML namelist
 ! -------------------------------------------------------------------- !
 &TIMESTEPS_NML
-  TIMESTEPS%DTMAX        =  900.
-  TIMESTEPS%DTXY         =  900.
-  TIMESTEPS%DTKTH        =  900.
-  TIMESTEPS%DTMIN        =  15.
+  TIMESTEPS%DTMAX        =  3600
+  TIMESTEPS%DTXY         =  1800
+  TIMESTEPS%DTKTH        =  1800
+  TIMESTEPS%DTMIN        =  60
 /
 
 ! -------------------------------------------------------------------- !
 ! Define the grid to preprocess via GRID_NML namelist
 ! -------------------------------------------------------------------- !
 &GRID_NML
-  GRID%NAME         =  'The outer grid @ 25 km'
-  GRID%NML          =  '../input/namelists_rtd.nml'
+  GRID%NAME         =  'RTD grid input BC'
+  GRID%NML          =  '../input_rtd/namelists_rtd.nml'
   GRID%TYPE         =  'RECT'
   GRID%COORD        =  'SPHE'
   GRID%CLOS         =  'NONE'
   GRID%ZLIM         =  -0.1
-  GRID%DMIN         =  0.25
+  GRID%DMIN         =  10.0
 /
 
 ! -------------------------------------------------------------------- !
 ! Define the rectilinear grid type via RECT_NML namelist
 ! -------------------------------------------------------------------- !
 &RECT_NML
-  RECT%NX           =  43
-  RECT%NY           =  43
-  RECT%SX           =  0.225 ! from SX_cart=25.E3 m to SX_cart/111111.111 deg
-  RECT%SY           =  0.225
-  RECT%X0           =  -5.625 ! from -25.E3 or -1.*SX  to -25*SX
-  RECT%Y0           =  -5.625
+  RECT%NX           =  13
+  RECT%NY           =  13
+  RECT%SX           =  1.0
+  RECT%SY           =  1.0
+  RECT%SF           =  1.0
+  RECT%X0           =  -7.0
+  RECT%Y0           =  -7.0
+  RECT%SF0          =  1.0
 /
 
 ! -------------------------------------------------------------------- !
@@ -60,23 +63,20 @@
 ! -------------------------------------------------------------------- !
 &DEPTH_NML
   DEPTH%SF        =  -1000.
-  DEPTH%FILENAME  =  '../input/outer.depth'
+  DEPTH%FILENAME  =  '../input_rtd/bndin.depth'
   DEPTH%IDLA      =  4
+  DEPTH%FORMAT    =  '(...)'
 /
 
 ! -------------------------------------------------------------------- !
-! Define the inbound boundary condition lines to preprocess via INBND_NML namelist
+! Define the point status map via MASK_NML namelist
 ! -------------------------------------------------------------------- !
-&INBND_COUNT_NML
-  INBND_COUNT%N_POINT    = 5
+&MASK_NML
+  MASK%FILENAME  =  '../input_rtd/bndin.mask'
+  MASK%IDLA      =  3
+  MASK%FORMAT    =  '(...)'
 /
-&INBND_POINT_NML
-  INBND_POINT(1)         =  1  1  F
-  INBND_POINT(2)         =  1 43  T
-  INBND_POINT(3)         = 43 43  T
-  INBND_POINT(4)         = 43  1  T
-  INBND_POINT(5)         =  1  1  T
-/
+
 ! -------------------------------------------------------------------- !
 ! WAVEWATCH III - end of namelist                                      !
 ! -------------------------------------------------------------------- !
