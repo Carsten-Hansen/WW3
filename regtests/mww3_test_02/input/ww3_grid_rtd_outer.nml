@@ -35,7 +35,7 @@
 ! -------------------------------------------------------------------- !
 &GRID_NML
   GRID%NAME         =  'The outer grid @ 25 km'
-  GRID%NML          =  '../input/namelists_rtd_outer.nml'
+  GRID%NML          =  '../input/namelists_rtd.nml'
   GRID%TYPE         =  'RECT'
   GRID%COORD        =  'SPHE'
   GRID%CLOS         =  'NONE'

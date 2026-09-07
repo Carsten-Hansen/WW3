@@ -36,7 +36,7 @@
 ! -------------------------------------------------------------------- !
 &GRID_NML
   GRID%NAME         =  'RTD grid input BC'
-  GRID%NML          =  '../input/namelists_rtd_bndin.nml'
+  GRID%NML          =  '../input/namelists_rtd.nml'
   GRID%TYPE         =  'RECT'
   GRID%COORD        =  'SPHE'
   GRID%CLOS         =  'NONE'
@@ -62,7 +62,7 @@
 ! Define the depth to preprocess via DEPTH_NML namelist
 ! -------------------------------------------------------------------- !
 &DEPTH_NML
-  DEPTH%SF        =  -100.
+  DEPTH%SF        =  -1000.
   DEPTH%FILENAME  =  '../input_bndin/bndin_rtd.depth'
   DEPTH%IDLA      =  4
   DEPTH%FORMAT    =  '(...)'

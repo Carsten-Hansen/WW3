@@ -35,7 +35,7 @@
 ! -------------------------------------------------------------------- !
 &GRID_NML
   GRID%NAME         =  'Fine (12.5km) inner nest'
-  GRID%NML          =  '../input/namelists_rtd_fine.nml'
+  GRID%NML          =  '../input/namelists_rtd.nml'
   GRID%TYPE         =  'RECT'
   GRID%COORD        =  'SPHE'
   GRID%CLOS         =  'NONE'
