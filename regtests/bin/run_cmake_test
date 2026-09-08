@@ -63,8 +63,7 @@ Options:
   -f               : force pre- and post-processing programs to be compiled
                    : non-MPI (i.e., with SHRD switch); default is all programs
                    : compiled with unmodified switch settings
-  -g grid_string   : use <prog>_<grid_string>.inp when <prog> is one of ww3_grid, 
-                   : ww3_strt, ww3_gint, ww3_bound
+  -g grid_string   : use ww3_grid_<grid_string>.inp
   -h               : print usage and exit
   -i inpdir        : use inputs in test_name/<inpdir> (default  test_name/input)
   -m grid_set      : execute multi-model test
@@ -732,20 +731,12 @@ prog=ww3_strt
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
 
-# config filename - grid type option
-  if [ $grdstr ]
-  then
-    fileconf="${prog}_${grdstr}"
-  else
-    fileconf="${prog}"
-  fi
-
 # select inp/nml files
-  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
+  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}.nml 2>/dev/null`" ]
   then
-    ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
+    ifile="`ls ${path_i}/${prog}.nml 2>/dev/null`"
   else
-    ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
+    ifile="`ls $path_i/$prog.inp 2>/dev/null`"
   fi
 
   if [ $? = 0 ]
@@ -776,11 +767,11 @@ then
       then
         \rm -f $prog.nml
         \ln -s $ifile $prog.nml
-        ofile="$path_w/`basename $ifile .nml`.out"
+        ofile="$path_w/`basename $ifile .nml`${gu}.out"
       else
         \rm -f $prog.inp
         \ln -s $ifile $prog.inp
-        ofile="$path_w/`basename $ifile .inp`.out"
+        ofile="$path_w/`basename $ifile .inp`${gu}.out"
       fi
 
       echo "   Processing $ifile"
@@ -839,37 +830,16 @@ fi
 prog=ww3_bound
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
-  ifile=''
-    
-  # seek for an inp/nml file in one of the model grids
-  for g in $model_grids
-  do
-    if [ $multi -eq 2 ]
-    then
-      gu="_$g"
-    fi
-    
-    if [ $grdstr ]
-    then
-      fileconf="${prog}_${grdstr}${gu}"
-    else
-      fileconf="${prog}${gu}"
-    fi
 
-    if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
-    then
-      ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
-    else
-      ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
-    fi
+# select inp/nml files
+  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}.nml 2>/dev/null`" ]
+  then
+    ifile="`ls ${path_i}/${prog}.nml 2>/dev/null`"
+  else
+    ifile="`ls $path_i/$prog.inp 2>/dev/null`"
+  fi
 
-    if [ $? = 0 ]
-    then
-      break
-    fi
-  done
-
-  if [ "$ifile" ]
+  if [ $? = 0 ]
   then
 
     echo ' '
@@ -886,32 +856,9 @@ then
 
     for g in $model_grids
     do
-
       if [ $multi -eq 2 ]
       then
         gu="_$g"
-      fi
-
-      if [ $grdstr ]
-      then
-        fileconf="${prog}_${grdstr}${gu}"
-      else
-        fileconf="${prog}${gu}"
-      fi
-
-      # select inp/nml files
-      if [ $nml_input ] && [ ! -z "`ls ${path_i}/${fileconf}.nml 2>/dev/null`" ]
-      then
-        ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
-      else
-        ifile="`ls $path_i/$fileconf.inp 2>/dev/null`"
-      fi
-
-      if [ $? = 0 ]
-      then
-        echo "Identify input file $ifile"
-      else
-        continue
       fi
 
       # link conf file
@@ -919,11 +866,11 @@ then
       then
         \rm -f $prog.nml
         \ln -s $ifile $prog.nml
-        ofile="$path_w/`basename $ifile .nml`.out"
+        ofile="$path_w/`basename $ifile .nml`${gu}.out"
       else
         \rm -f $prog.inp
         \ln -s $ifile $prog.inp
-        ofile="$path_w/`basename $ifile .inp`.out"
+        ofile="$path_w/`basename $ifile .inp`${gu}.out"
       fi
 
       echo "   Processing $ifile"
@@ -940,7 +887,7 @@ then
         Tstart=`date +"%s.%2N"`
       fi
 
-      if $path_e/$prog > $ofile 2>&1
+      if $path_e/$prog > $ofile
       then
         \rm -f $prog.inp
         \rm -f $prog.nml

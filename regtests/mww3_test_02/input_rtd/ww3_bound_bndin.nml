@@ -6,7 +6,7 @@
 ! Define the input boundaries to preprocess via BOUND_NML namelist
 ! -------------------------------------------------------------------- !
 &BOUND_NML
-  BOUND%FILE        =  '../input_bndin/spec.list'
+  BOUND%FILE        =  '../input_rtd/spec.list'
 /
 
 ! -------------------------------------------------------------------- !
