@@ -651,7 +651,6 @@ then
     then
       ifile="`ls ${path_i}/${fileconf}.nml 2>/dev/null`"
     else
-      echo "Identify input file ${fileconf}.inp in directory path_i=$path_i"
       ifile="`ls $path_i/${fileconf}.inp 2>/dev/null`"
     fi
 
@@ -831,36 +830,15 @@ prog=ww3_bound
 if [ $exec_p = $prog -o $exec_p = "none" ]
 then
 
-# Determine if an ifile=${prog}${gu}.nml exists for gu='' or gu="_<any ww3-multi grid>"
-  for g in "" $model_grids
-  do
-    if [ $multi -eq 2 -a ! -z "$g" ]
-    then
-      gu="_$g" 
-      # For ww3_multi there may be an input file with empty $gu extension
-      # In such case the boundary data will be interpolated for all grids
-    fi
+# select inp/nml files
+  if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}.nml 2>/dev/null`" ]
+  then
+    ifile="`ls ${path_i}/${prog}.nml 2>/dev/null`"
+  else
+    ifile="`ls $path_i/$prog.inp 2>/dev/null`"
+  fi
 
-
-    # select inp/nml files
-    if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}${gu}.nml 2>/dev/null`" ]
-    then
-      ifile="`ls ${path_i}/${prog}${gu}.nml 2>/dev/null`"
-    else
-      ifile="`ls $path_i/$prog${gu}.inp 2>/dev/null`"
-    fi
-
-    if [ $? = 0 ]
-    then
-      # an ifile is found. gmult may be empty even for ww3_multi
-      gmult=$gu
-      break
-    else
-      ifile=''
-    fi
-  done
-
-  if [ "$ifile" ]
+  if [ $? = 0 ]
   then
 
     echo ' '
@@ -881,24 +859,6 @@ then
       then
         gu="_$g"
       fi
-      if [ ! -z "$gmult" ]
-      then
-        gmult="_$g"
-      fi
-
-      # select inp/nml files
-      if [ $nml_input ] && [ ! -z "`ls ${path_i}/${prog}${gmult}.nml 2>/dev/null`" ]
-      then
-        ifile="`ls ${path_i}/${prog}${gmult}.nml 2>/dev/null`"
-      else
-        ifile="`ls $path_i/$prog${gmult}.inp 2>/dev/null`"
-      fi
-
-      if [ $? -ne 0 ]
-      then
-        continue
-      fi
-      # An input file $ifile is found
 
       # link conf file
       if [ $nml_input ] && [ ! -z "`basename ${ifile} | grep -o nml`" ]
